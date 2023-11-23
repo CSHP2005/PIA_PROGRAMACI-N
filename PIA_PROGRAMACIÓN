@@ -1,0 +1,273 @@
+MENÚ DE LA APLICACIÓN
+Lo primero que debe aparecer es el menú de la aplicación.
+
+**** MENÚ PRINCIPAL ****
+
+[A] Registrar un asistente.
+[B] Registrar asistente a un evento.
+[C] Registrar asistencia al evento.
+[D] Ver eventos del alumno.
+[E] Listado de asistencia a evento.
+[X] Salir
+
+¿QUÉ OPCIÓN DESEAS?:
+
+
+def elegir_letra(prompt:str='SELECCIONA UNA LETRA: ',opciones_validas:str='12345'):
+        while True:
+            opcion=input(prompt)
+            opcion=opcion.upper()
+            if (opcion==''):
+                print('NO SE PUEDE OMITIR. INTENTAR DE NUEVO')
+                continue
+            if not bool(re.match(f'^[{opciones_validas}]$',opcion)):
+                print('NO SE RECONOCIO LA OPERACIÓN. INTENTAR DE NUEVO')
+                continue
+            # PARA TERMINAR EL CICLO
+            break
+        return opcion
+     
+
+def mostrar_menu(opciones:dict,titulo:str='OPCIONES DISPONIBLES'):
+
+    print(titulo)
+    opciones_validas=''
+    for k,v in opciones.items():
+        print(f'[{k}] {v}')
+        opciones_validas=f'{opciones_validas}{k}'
+
+    opc=elegir_letra('¿QUÉ OPCIÓN DESEAS?: ', opciones_validas)
+    return opc
+     
+
+# PROGRAMA PRINCIPAL
+
+opciones_menu_principal={
+    'A':'Registrar un asistente',
+    'B':'Registrar asistente a un evento',
+    'C':'Registrar asistencia al evento',
+    'D':'Ver eventos del alumno',
+    'E':'Listado de asistencia',
+    'X':'Salir\n'
+}
+
+opciones_menu_asistentes={
+    'A':'Registrar un asistente',
+    'X':'Salir\n'
+}
+
+opcion_registrar_evento={
+    'B':'Registrar asistente a un evento',
+    'X':'Salir\n'
+}
+
+opcion_registrar_asistencia={
+    'C':'Registrar asistencia a un evento',
+    'X':'Salir\n'
+}
+
+opcion_asistencia_alumnos={
+    'D':'Eventos del alumno',
+    'X':'Salir\n'
+}
+
+opcion_lista_asistencias={
+    'E':'Lista de asistencia',
+    'X':'Salir\n'
+}
+
+while True:
+    opcion_elegida=mostrar_menu(opciones_menu_principal, '\n** MENÚ PRINCIPAL\n')
+    match opcion_elegida:
+        case 'A':
+            while True:
+                opcion_elegida_asistente=mostrar_menu(opciones_menu_asistentes, '\n** MENÚ ASISTENTES\n')
+                match opcion_elegida_asistente:
+                    case 'A':
+                      from IPython.core.excolors import exception_colors
+                      conferencias={
+                          1:['04/11/2023 15:00','Inteligencia Artificial en los Negocios',
+                            'Dr. Alvaro Francisco Salazar', 'A', 0],
+                          2:['05/11/2023 09:00','Uso de la nube para gestión de procesos',
+                            'Dr. Manuel Leos','B',0],
+                          3:['05/11/2023 14:00','Industria 4.0 retos y oportunidades',
+                            'Dra. Monica Hernández','C',20],
+                          4:['05/11/2023 19:00','Machine Learning for a better world',
+                            'Dr. Janick Jameson','C',0],
+                          5:['06/11/2023 15:00','Retos de la Banca Electrónica en México',
+                            'Ing. Clara Benavides','A',0]
+                      }
+
+                      conferencia=0
+                      while True:
+                          _conferencia=input('¿A QUÉ CONFERENCIA DESEAS INSCRIBIRTE?: ')
+                          # Validar que no se omita
+                          if (_conferencia==''):
+                              print('CONFERENCIA NO VÁLIDA. INTENTAR DE NUEVO')
+                              continue
+                          # Validar que sea entero.
+                          try:
+                              conferencia=int(_conferencia)
+                          except:
+                              print('DEBE SER UN ENTERO. INTENTAR DE NUEVO')
+                              continue
+                          # Validar que la conferencia exista
+                          if not (conferencia in conferencias):
+                              print('NO EXISTE LA CONFERENCIA. INTENTAR DE NUEVO')
+                              continue
+                          # Si capturé una conferencia existente, que la despliegue.
+                          break
+
+                      print('CONFERENCIA ENCONTRADA CON ÉXITO')
+
+                    case 'X':
+                        break
+                    case _:
+                        print('NO SE RECONOCE LA OPERACIÓN')
+                        continue
+        case 'B':
+            while True:
+                opcion_elegida_evento=mostrar_menu(opcion_registrar_evento, '\n** NUEVO ASISTENTE AL EVENTO\n')
+                match opcion_elegida_evento:
+                    case 'B':
+                      nuevos_asistentes = []
+                      registrar_asistentes = int(input('ASISTENTES QUE DESEAS REGISTRAR: '))
+                      nuevos_asistentes.append(registrar_asistentes)
+                    case 'X':
+                        break
+                    case _:
+                        print('NO SE RECONOCE LA OPERACIÓN')
+                        continue
+        case 'C':
+            while True:
+                opcion_elegida_asistencia=mostrar_menu(opcion_registrar_asistencia, '\n** REGISTRO DE ASISTENCIA\n')
+                match opcion_registrar_asistencia:
+                    case 'C':
+                      def registrar_asistencia(evento_id, asistente_id):
+                        if evento_id in conferencias:
+                            evento = conferencias[evento_id]
+                            if asistente_id not in evento[4]:
+                                evento[4].append(asistente_id)
+                                print(f"Asistencia registrada para el evento '{evento[1]}' (ID {evento_id}) para el asistente ID {asistente_id}.")
+                    case 'X':
+                        break
+                    case _:
+                        print('NO SE RECONOCE LA OPERACIÓN')
+                        continue
+        case 'D':
+            while True:
+                opcion_elegida_alumnos=mostrar_menu(opcion_asistencia_alumnos, '\n** EVENTOS DEL ALUMNO\n')
+                match opcion_asistencia_alumnos:
+                  case 'D':
+                    class Alumno:
+                        def _init_(self, matricula, nombre, apellido1, apellido2, fecha_nacimiento, carrera):
+                            self.matricula = matricula
+                            self.nombre = nombre
+                            self.apellido1 = apellido1
+                            self.apellido2 = apellido2
+                            self.fecha_nacimiento = fecha_nacimiento
+                            self.carrera = carrera
+                            self.eventos_asistidos = []
+
+                        def asistir_evento(self, evento):
+                            if evento not in self.eventos_asistidos:
+                                self.eventos_asistidos.append(evento)
+
+                        def obtener_constancia(self):
+                            if len(self.eventos_asistidos) >= 3:
+                                return "Constancia de participación otorgada"
+                            else:
+                                return "No cumple con los requisitos para obtener constancia"
+
+                    # Crear instancias de eventos
+                    evento1 = evento("4 de noviembre", "15:00 horas", "Inteligencia Artificial en los Negocios", "Dr. Alvaro Francisco Salazar", "A", 1000)
+                    evento2 = evento("5 de noviembre", "9:00 horas", "Uso de la nube para gestión de procesos", "Dr. Manuel Leos", "B", 200)
+                    evento3 = evento("5 de noviembre", "14:00 horas", "Industria 4.0 retos y oportunidades", "Dra. Monica Hernández", "C", 150)
+                    evento4 = evento("5 de noviembre", "19:00 horas", "Machine Learning for a better world", "Dr. Janick Jameson", "C", 150)
+                    evento5 = evento("6 de noviembre", "15:00 horas", "Retos de la Banca Electrónica en México", "Ing. Clara Benavides", "A", 1000)
+
+                    # Solicitar datos al usuario
+                    matricula = input("Ingrese su matrícula: ")
+                    nombre = input("Ingrese su nombre: ")
+                    apellido1 = input("Ingrese su primer apellido: ")
+                    apellido2 = input("Ingrese su segundo apellido: ")
+                    fecha_nacimiento = input("Ingrese su fecha de nacimiento (YYYY-MM-DD): ")
+                    carrera = input("Ingrese su carrera: ")
+
+                    # Crear instancia de alumno con los datos ingresados por el usuario
+                    alumno = Alumno(matricula, nombre, apellido1, apellido2, fecha_nacimiento, carrera)
+
+                    # Mostrar eventos disponibles
+                    print("Eventos disponibles:")
+                    print("1. ", evento1.titulo)
+                    print("2. ", evento2.titulo)
+                    print("3. ", evento3.titulo)
+                    print("4. ", evento4.titulo)
+                    print("5. ", evento5.titulo)
+
+                    # Solicitar al usuario que elija los eventos a los que desea asistir
+                    num_eventos = int(input("Ingrese el número de eventos a los que desea asistir: "))
+
+                    for i in range(num_eventos):
+                        evento_elegido = int(input("Ingrese el número del evento al que desea asistir: "))
+                    if evento_elegido == 1:
+                        mensaje = evento1.agregar_asistente(alumno)
+                    elif evento_elegido == 2:
+                        mensaje = evento2.agregar_asistente(alumno)
+                    elif evento_elegido == 3:
+                        mensaje = evento3.agregar_asistente(alumno)
+                    elif evento_elegido == 4:
+                        mensaje = evento4.agregar_asistente(alumno)
+                    elif evento_elegido == 5:
+                        mensaje = evento5.agregar_asistente(alumno)
+                    else:
+                        mensaje = "Número de evento inválido"
+
+                    print(mensaje)
+
+                # Obtener constancia de participación del alumno
+                constancia = alumno.obtener_constancia()
+                print(constancia)
+
+                # Mostrar historial de eventos a los que ha asistido el alumno
+                print("Historial de eventos asistidos:")
+                for evento in alumno.eventos_asistidos:
+                    print(evento.titulo)
+        case 'E':
+            while True:
+                opcion_elegida_asistencias=mostrar_menu(opcion_lista_asistencias, '\n** EVENTOS DEL ALUMNO\n')
+                match opcion_lista_asistencias:
+                  case 'E':
+                    evento = input('Ingrese el número del evento para ver la lista de asistentes: ')
+                    # Mostrar la lista de asistentes para un evento específico
+                    print(f'Lista de asistentes para el evento número {evento}:')
+                    for key, value in registros.items():
+                        if key[1] == evento:
+                            asistente = opcion_lista_asistencias(key[0])
+                            if asistente:
+                                print(f'Matricula: {key[0]}, Nombre: {asistente["nombre"]} {asistente["apellido1"]} {asistente["apellido2"]}')
+                            else:
+                                print(f'Matricula: {key[0]}, Asistente no encontrado.')
+                  case 'X':
+                      break
+                  case _:
+                      print('NO SE RECONOCE LA OPERACIÓN')
+                      continue
+        case 'X':
+            print('GRACIAS POR USAR EL SISTEMA')
+            break
+        case _:
+            print('NO SE RECONOCE LA OPERACIÓN')
+            continue
+     
+** MENÚ PRINCIPAL
+
+[A] Registrar un asistente
+[B] Registrar asistente a un evento
+[C] Registrar asistencia al evento
+[D] Ver eventos del alumno
+[E] Listado de asistencia
+[X] Salir
+
+¿QUÉ OPCIÓN DESEAS?: x
+GRACIAS POR USAR EL SISTEMA
